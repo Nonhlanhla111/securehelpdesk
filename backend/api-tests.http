@@ -1,0 +1,65 @@
+### Manual API tests for the VS Code "REST Client" extension (free).
+### Click "Send Request" above any request. Start the API first (see README).
+
+@base = http://localhost:8000
+
+### 1. Register an employee
+POST {{base}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "employee@example.com",
+  "full_name": "Ella Employee",
+  "password": "Str0ngPassw0rd!"
+}
+
+### 2. Log in - copy the access_token from the response into the @token line below
+POST {{base}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "employee@example.com",
+  "password": "Str0ngPassw0rd!"
+}
+
+###
+@token = PASTE_ACCESS_TOKEN_HERE
+
+### 3. Who am I?
+GET {{base}}/api/auth/me
+Authorization: Bearer {{token}}
+
+### 4. Create the example ticket from the project spec
+POST {{base}}/api/tickets
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Unable to connect to company Wi-Fi",
+  "description": "My laptop cannot join the office network since Monday morning.",
+  "category": "Network",
+  "priority": "Medium"
+}
+
+### 5. List my tickets (try adding ?q=wi-fi&status=Open)
+GET {{base}}/api/tickets
+Authorization: Bearer {{token}}
+
+### 6. Add a comment
+POST {{base}}/api/tickets/1/comments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "body": "I have already tried restarting the laptop." }
+
+### 7. SECURITY CHECK - an employee must be refused (403) here
+GET {{base}}/api/users
+Authorization: Bearer {{token}}
+
+### 8. SECURITY CHECK - SQL injection text is treated as plain text (0 results, no error)
+GET {{base}}/api/tickets?q=' OR '1'='1
+Authorization: Bearer {{token}}
+
+### 9. Log out (the token stops working immediately)
+POST {{base}}/api/auth/logout
+Authorization: Bearer {{token}}

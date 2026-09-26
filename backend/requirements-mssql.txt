@@ -1,0 +1,3 @@
+# Only needed when DATABASE_URL points at Microsoft SQL Server.
+# Also install "ODBC Driver 18 for SQL Server" (free) from Microsoft.
+pyodbc>=5.0

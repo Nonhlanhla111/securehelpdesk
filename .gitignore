@@ -1,0 +1,27 @@
+# Secrets - never commit these
+.env
+*.pem
+*.key
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local data
+*.db
+*.sqlite3
+backend/uploads/
+
+# Node / React (for the frontend phase)
+node_modules/
+dist/
+
+# Editors / OS
+.idea/
+.DS_Store
+Thumbs.db

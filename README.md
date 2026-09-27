@@ -2,8 +2,11 @@
 
 Secure IT Help Desk & Incident Management System — FastAPI · SQLAlchemy · SQL Server · (React next)
 
-**Status: Phase 1 complete — backend API with authentication, RBAC, tickets, comments,
-attachments, audit logging, security-event monitoring, dashboards, reports and 98 automated tests.**
+**Status: Phase 1 (backend API) and Phase 2 (React frontend) complete.**
+Backend: authentication, RBAC, tickets, comments, attachments, audit logging,
+security-event monitoring, dashboards, reports, 98 automated tests.
+Frontend: login/register, role-aware dashboard, ticket list/detail with the
+full workflow, admin screens for users and audit/security logs.
 
 ## Everything here is free
 
@@ -48,6 +51,20 @@ token from `POST /api/auth/login`. You can also use `backend/api-tests.http` wit
 
 > If PowerShell blocks the activate script, run once:
 > `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`
+
+## Running the frontend
+
+In a **second** terminal (leave the backend running in the first one):
+
+```powershell
+cd frontend
+npm install
+npm run dev
+```
+
+Open **http://localhost:5173**. Register an employee account there, or log
+in with the admin account you created with `create_admin`. See
+`frontend/README.md` for more detail.
 
 ## Switching to SQL Server (SSMS)
 
@@ -122,6 +139,14 @@ backend/
   tests/               98 pytest tests
   scripts/create_admin.py
   api-tests.http       manual tests (REST Client)
+frontend/
+  src/
+    api/client.js        axios instance (auth header, 401 handling)
+    auth/AuthContext.jsx  login/register/logout state
+    components/           sidebar, layout, chips, icons, loading states
+    pages/                Login, Register, Dashboard, TicketList, TicketDetail,
+                          NewTicket, Reports, AdminUsers, AdminLogs
+    styles.css            design tokens + all styling (no CSS framework)
 docs/database.md       ER + workflow diagrams (Mermaid)
 ```
 
@@ -134,7 +159,7 @@ docs/database.md       ER + workflow diagrams (Mermaid)
 
 ## Known limitations / roadmap
 
-- [ ] **Phase 2 — React frontend** (login, ticket list/detail, dashboards, admin screens)
+- [x] ~~Phase 2 — React frontend~~ (login, ticket list/detail, dashboards, admin screens)
 - [ ] Password **reset** flow (needs an email step; can log the link in development)
 - [ ] Unassign / release ticket; agent-to-agent reassignment
 - [ ] Alembic migrations (tables currently come from `create_all`)

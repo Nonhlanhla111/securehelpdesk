@@ -126,3 +126,30 @@ def test_security_headers_present(client):
     assert r.headers["x-content-type-options"] == "nosniff"
     assert r.headers["x-frame-options"] == "DENY"
     assert "default-src 'none'" in r.headers["content-security-policy"]
+
+
+def test_admin_bootstrap_creates_account_once(db):
+    from app.seed import bootstrap_admin
+    from app.models import User
+    from sqlalchemy import select
+
+    bootstrap_admin(db, "boot@example.com", "Boot Admin", PASSWORD)
+    user = db.scalar(select(User).where(User.email == "boot@example.com"))
+    assert user is not None and user.role_name == "Administrator"
+
+    # Calling again (e.g. every app restart) must not touch the existing account.
+    from app.security import hash_password
+    original_hash = user.hashed_password
+    bootstrap_admin(db, "boot@example.com", "Different Name", "SomeOtherPassw0rd!")
+    db.refresh(user)
+    assert user.hashed_password == original_hash and user.full_name == "Boot Admin"
+
+
+def test_admin_bootstrap_noop_when_unset(db):
+    from app.seed import bootstrap_admin
+    from app.models import User
+    from sqlalchemy import select
+
+    bootstrap_admin(db, None, None, None)
+    bootstrap_admin(db, "partial@example.com", None, None)
+    assert db.scalar(select(User).where(User.email == "partial@example.com")) is None

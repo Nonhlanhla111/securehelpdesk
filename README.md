@@ -1,12 +1,16 @@
 # SecureHelpDesk
 
-Secure IT Help Desk & Incident Management System — FastAPI · SQLAlchemy · SQL Server · (React next)
+[![Backend tests](https://github.com/Nonhlanhla111/securehelpdesk/actions/workflows/backend-tests.yml/badge.svg)](https://github.com/Nonhlanhla111/securehelpdesk/actions/workflows/backend-tests.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+Secure IT Help Desk & Incident Management System — FastAPI · React · SQLAlchemy · SQL Server
 
 **Status: Phase 1 (backend API) and Phase 2 (React frontend) complete.**
 Backend: authentication, RBAC, tickets, comments, attachments, audit logging,
 security-event monitoring, dashboards, reports, 98 automated tests.
 Frontend: login/register, role-aware dashboard, ticket list/detail with the
-full workflow, admin screens for users and audit/security logs.
+full workflow, admin screens for users and audit/security logs, light and
+dark mode.
 
 ## Everything here is free
 
@@ -65,6 +69,24 @@ npm run dev
 Open **http://localhost:5173**. Register an employee account there, or log
 in with the admin account you created with `create_admin`. See
 `frontend/README.md` for more detail.
+
+## Deploying a free live demo (Render + Vercel)
+
+- **Backend → [Render](https://render.com)**: a free Web Service. Free
+  instances spin down after 15 minutes idle and take up to a minute to wake
+  on the next request — expected for a demo, not a bug.
+- **Frontend → [Vercel](https://vercel.com)**: a free static deploy, root
+  directory `frontend`.
+- **Database**: the demo runs on SQLite by default, which resets on every
+  redeploy. That's fine for a portfolio demo; an `ADMIN_BOOTSTRAP_*` set of
+  environment variables (see `.env.example`) recreates your admin login
+  automatically every time, so the demo is never locked out.
+
+Order matters a little because of CORS:
+1. Deploy the backend first and note its URL.
+2. Deploy the frontend with `VITE_API_URL` set to that backend URL.
+3. Go back to Render and set `CORS_ORIGINS` to include the frontend's URL,
+   then redeploy the backend once more.
 
 ## Switching to SQL Server (SSMS)
 

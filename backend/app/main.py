@@ -10,7 +10,7 @@ from fastapi.responses import JSONResponse
 from app.config import get_settings
 from app.database import Base, SessionLocal, engine
 from app.routers import attachments, auth, dashboard, logs, tickets, users
-from app.seed import seed_lookups
+from app.seed import bootstrap_admin, seed_lookups
 
 settings = get_settings()
 log = logging.getLogger("securehelpdesk")
@@ -21,6 +21,8 @@ async def lifespan(app: FastAPI):
     Base.metadata.create_all(bind=engine)  # later: replace with Alembic migrations
     with SessionLocal() as db:
         seed_lookups(db)
+        bootstrap_admin(db, settings.admin_bootstrap_email, settings.admin_bootstrap_name,
+                        settings.admin_bootstrap_password)
     if settings.secret_key.startswith("dev-only"):
         log.warning("Using the built-in development SECRET_KEY. Set SECRET_KEY in .env!")
     yield

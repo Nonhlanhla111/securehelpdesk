@@ -1,10 +1,12 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
-import { IconDashboard, IconTicket, IconUsers, IconShield, IconChart } from "./Icons";
+import { useTheme } from "../theme/ThemeContext";
+import { IconDashboard, IconTicket, IconUsers, IconShield, IconChart, IconSun, IconMoon } from "./Icons";
 import { initials } from "./Loading";
 
 export function Sidebar() {
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const isStaff = user.role === "IT Support Agent" || user.role === "Administrator";
   const isAdmin = user.role === "Administrator";
 
@@ -49,6 +51,10 @@ export function Sidebar() {
             <div className="user-role">{user.role}</div>
           </div>
         </div>
+        <button className="theme-toggle" onClick={toggleTheme}>
+          {theme === "dark" ? <IconSun /> : <IconMoon />}
+          {theme === "dark" ? "Light mode" : "Dark mode"}
+        </button>
         <button className="logout-btn" onClick={logout}>Log out</button>
       </div>
     </aside>

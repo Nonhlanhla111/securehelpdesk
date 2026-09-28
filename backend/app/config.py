@@ -32,6 +32,14 @@ class Settings(BaseSettings):
 
     cors_origins: list[str] = ["http://localhost:5173"]
 
+    # Optional: if all three are set and no user with this email exists yet,
+    # the app creates an Administrator account on startup. Meant for hosts
+    # with no interactive terminal (e.g. Render) where `create_admin` can't
+    # be run by hand. Leave unset for local development.
+    admin_bootstrap_email: str | None = None
+    admin_bootstrap_name: str | None = None
+    admin_bootstrap_password: str | None = None
+
     @property
     def is_production(self) -> bool:
         return self.environment.lower() == "production"

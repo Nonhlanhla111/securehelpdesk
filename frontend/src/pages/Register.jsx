@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import { apiErrorMessage } from "../api/client";
+import { AuthThemeToggle } from "../components/AuthThemeToggle";
 
 export default function Register() {
   const { register } = useAuth();
@@ -28,6 +29,7 @@ export default function Register() {
 
   return (
     <div className="auth-page">
+      <AuthThemeToggle />
       <div className="auth-card">
         <div className="auth-brand">
           <span className="brand-mark">SH</span>

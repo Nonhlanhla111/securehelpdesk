@@ -179,7 +179,7 @@ This project includes RBAC, Argon2id password hashing, JWT auth, audit
 logging, rate limiting, and object-level authorization (anti-IDOR checks).
 The live deployment was also assessed against the
 [Mozilla HTTP Observatory](https://observatory.mozilla.org) — see the full
-[security assessment](docs/security-assessment.md) for findings and fixes
+[security assessment](security-assessment.md) for findings and fixes
 (improved from a C/50 to an A+/115 score).
 
 

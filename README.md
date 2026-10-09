@@ -12,6 +12,8 @@ Frontend: login/register, role-aware dashboard, ticket list/detail with the
 full workflow, admin screens for users and audit/security logs, light and
 dark mode.
 
+[![Security: A+](https://img.shields.io/badge/Security%20Headers-A%2B-brightgreen)](docs/security-assessment.md)
+
 ## Everything here is free
 
 | Tool | Cost | Notes |
@@ -171,10 +173,24 @@ frontend/
     styles.css            design tokens + all styling (no CSS framework)
 docs/database.md       ER + workflow diagrams (Mermaid)
 ```
+## Security
+
+This project includes RBAC, Argon2id password hashing, JWT auth, audit
+logging, rate limiting, and object-level authorization (anti-IDOR checks).
+The live deployment was also assessed against the
+[Mozilla HTTP Observatory](https://observatory.mozilla.org) — see the full
+[security assessment](docs/security-assessment.md) for findings and fixes
+(improved from a C/50 to an A+/115 score).
+
 
 ## Security testing tools (free) — suggested next steps
 
-1. **OWASP ZAP**: start the API, then *Automated Scan* against `http://localhost:8000`, or import `http://localhost:8000/openapi.json` for an API scan.
+The header-based assessment above (Mozilla HTTP Observatory) covers HTTP
+response header hardening. For deeper testing — crawling the running app
+for vulnerabilities, intercepting live requests, static code analysis, and
+dependency scanning — the following free tools are recommended:
+
+1. **OWASP ZAP**: start the API, then *Automated Scan* against `http://localhost:8000`, or import `http://localhost:8000/openapi.json` for an API scan. *(Note: Windows SmartScreen may flag the installer as unrecognized — this is a known false positive for less-common installers; choose "More info → Run anyway" to proceed.)*
 2. **Burp Community**: proxy your browser/REST calls; try Repeater on ticket IDs while logged in as a different employee.
 3. **SonarQube for IDE**: install in VS Code; it flags issues as you type.
 4. **Snyk**: `snyk test --file=backend/requirements.txt` (free account) for dependency vulnerabilities.

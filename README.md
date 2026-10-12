@@ -182,7 +182,7 @@ The live deployment was also assessed against the
 [security assessment](security-assessment.md) for findings and fixes
 (improved from a C/50 to an A+/115 score).
 
-See [threat-model.md](docs/threat-model.md) for a full STRIDE-based threat
+See [threat-model.md](threat-model.md) for a full STRIDE-based threat
 analysis of the system's attack surface and mitigations.
 
 ## Security testing tools (free) — suggested next steps

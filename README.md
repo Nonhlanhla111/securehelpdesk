@@ -185,6 +185,10 @@ The live deployment was also assessed against the
 See [threat-model.md](threat-model.md) for a full STRIDE-based threat
 analysis of the system's attack surface and mitigations.
 
+This repository also runs GitHub's automated security tooling on every
+push: CodeQL static analysis, Dependabot vulnerability alerts, and secret
+scanning with push protection.
+
 ## Security testing tools (free) — suggested next steps
 
 The header-based assessment above (Mozilla HTTP Observatory) covers HTTP

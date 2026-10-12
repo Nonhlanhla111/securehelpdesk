@@ -182,6 +182,8 @@ The live deployment was also assessed against the
 [security assessment](security-assessment.md) for findings and fixes
 (improved from a C/50 to an A+/115 score).
 
+See [threat-model.md](docs/threat-model.md) for a full STRIDE-based threat
+analysis of the system's attack surface and mitigations.
 
 ## Security testing tools (free) — suggested next steps
 
@@ -203,4 +205,6 @@ dependency scanning — the following free tools are recommended:
 - [ ] Alembic migrations (tables currently come from `create_all`)
 - [ ] Rate limiter is in-memory (single process); use Redis for multi-worker deployments
 - [ ] Behind a reverse proxy, configure trusted proxy headers so audit logs record real client IPs
-- [ ] Tokens are returned in JSON; the React phase should decide between memory storage and httpOnly cookies (+CSRF)
+- [x] ~~Decide token storage strategy~~ (in-memory only, chosen to reduce XSS exposure vs. localStorage)
+- [ ] Consider httpOnly cookies + CSRF protection as a stronger alternative to in-memory token storage
+- [ ] Multi-factor authentication (2FA/TOTP)

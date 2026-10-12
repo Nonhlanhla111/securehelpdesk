@@ -186,14 +186,14 @@ See [threat-model.md](threat-model.md) for a full STRIDE-based threat
 analysis of the system's attack surface and mitigations.
 
 This repository also runs GitHub's automated security tooling on every
-push: CodeQL static analysis, Dependabot vulnerability alerts, and secret
+push: CodeQL static analysis, Dependabot vulnerability alerts and secret
 scanning with push protection.
 
 ## Security testing tools (free) — suggested next steps
 
 The header-based assessment above (Mozilla HTTP Observatory) covers HTTP
 response header hardening. For deeper testing — crawling the running app
-for vulnerabilities, intercepting live requests, static code analysis, and
+for vulnerabilities, intercepting live requests, static code analysis and
 dependency scanning — the following free tools are recommended:
 
 1. **OWASP ZAP**: start the API, then *Automated Scan* against `http://localhost:8000`, or import `http://localhost:8000/openapi.json` for an API scan. *(Note: Windows SmartScreen may flag the installer as unrecognized — this is a known false positive for less-common installers; choose "More info → Run anyway" to proceed.)*

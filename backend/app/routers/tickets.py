@@ -67,6 +67,7 @@ def list_tickets(
     priority: PriorityName | None = None,
     assigned_to_id: int | None = None,
     unassigned: bool | None = None,
+    exclude_closed: bool | None = None,
     employee: str | None = Query(None, max_length=100, description="Employee name or email contains"),
     created_from: date | None = None,
     created_to: date | None = None,
@@ -98,7 +99,8 @@ def list_tickets(
         conds.append(Ticket.assigned_to_id == assigned_to_id)
     if unassigned:
         conds.append(Ticket.assigned_to_id.is_(None))
-    if employee and _is_staff(user):
+    if exclude_closed:
+        conds.append(Ticket.status_id != lookup_id(db, TicketStatus, StatusName.CLOSED.value))
         like = f"%{_escape_like(employee.strip())}%"
         conds.append(Ticket.created_by.has(or_(User.full_name.ilike(like, escape="\\"),
                                                User.email.ilike(like, escape="\\"))))

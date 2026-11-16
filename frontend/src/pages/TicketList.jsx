@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { api } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
 import { Loading, EmptyState, formatDateTime } from "../components/Loading";
@@ -14,13 +14,15 @@ const PAGE_SIZE = 15;
 export default function TicketList() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const isStaff = user.role !== "Employee";
 
   const [q, setQ] = useState("");
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState(searchParams.get("status") || "");
   const [category, setCategory] = useState("");
   const [priority, setPriority] = useState("");
   const [unassignedOnly, setUnassignedOnly] = useState(false);
+  const [openOnly, setOpenOnly] = useState(searchParams.get("exclude_closed") === "true");
   const [page, setPage] = useState(1);
 
   const [result, setResult] = useState(null);
@@ -34,6 +36,7 @@ export default function TicketList() {
     if (category) params.category = category;
     if (priority) params.priority = priority;
     if (unassignedOnly) params.unassigned = true;
+    if (openOnly) params.exclude_closed = true;
 
     const handle = setTimeout(() => {
       api.get("/api/tickets", { params }).then((res) => {
@@ -42,9 +45,9 @@ export default function TicketList() {
       });
     }, 250); // debounce free-text search
     return () => clearTimeout(handle);
-  }, [q, status, category, priority, unassignedOnly, page]);
+  }, [q, status, category, priority, unassignedOnly, openOnly, page]);
 
-  useEffect(() => setPage(1), [q, status, category, priority, unassignedOnly]);
+  useEffect(() => setPage(1), [q, status, category, priority, unassignedOnly, openOnly]);
 
   const totalPages = result ? Math.max(1, Math.ceil(result.total / PAGE_SIZE)) : 1;
 
@@ -66,7 +69,7 @@ export default function TicketList() {
             value={q} onChange={(e) => setQ(e.target.value)}
           />
         </div>
-        <select value={status} onChange={(e) => setStatus(e.target.value)}>
+        <select value={status} onChange={(e) => { setStatus(e.target.value); setOpenOnly(false); }}>
           <option value="">Any status</option>
           {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
         </select>
@@ -78,6 +81,14 @@ export default function TicketList() {
           <option value="">Any priority</option>
           {PRIORITIES.map((p) => <option key={p} value={p}>{p}</option>)}
         </select>
+        <label style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: "var(--ink-soft)" }}>
+          <input
+            type="checkbox"
+            checked={openOnly}
+            onChange={(e) => { setOpenOnly(e.target.checked); if (e.target.checked) setStatus(""); }}
+          />
+          Still open only
+        </label>
         {isStaff && (
           <label style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: "var(--ink-soft)" }}>
             <input type="checkbox" checked={unassignedOnly} onChange={(e) => setUnassignedOnly(e.target.checked)} />

@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { api } from "../api/client";
 import { Loading } from "../components/Loading";
 
 export default function Reports() {
   const [data, setData] = useState(null);
   const [range, setRange] = useState(30);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const to = new Date();
@@ -32,19 +34,19 @@ export default function Reports() {
       {data && (
         <>
           <div className="stat-grid">
-            <div className="stat-card">
+            <div className="stat-card" style={{ cursor: "pointer" }} onClick={() => navigate("/tickets")}>
               <div className="stat-value">{data.tickets_created}</div>
               <div className="stat-label">Tickets created</div>
             </div>
-            <div className="stat-card accent-primary">
+            <div className="stat-card accent-primary" style={{ cursor: "pointer" }} onClick={() => navigate("/tickets?status=Resolved")}>
               <div className="stat-value">{data.tickets_resolved}</div>
               <div className="stat-label">Tickets resolved</div>
             </div>
-            <div className="stat-card">
+            <div className="stat-card" style={{ cursor: "pointer" }} onClick={() => navigate("/tickets?status=Closed")}>
               <div className="stat-value">{data.open_vs_closed.closed}</div>
               <div className="stat-label">Closed</div>
             </div>
-            <div className="stat-card accent-amber">
+            <div className="stat-card accent-amber" style={{ cursor: "pointer" }} onClick={() => navigate("/tickets?exclude_closed=true")}>
               <div className="stat-value">{data.open_vs_closed.not_closed}</div>
               <div className="stat-label">Still open</div>
             </div>

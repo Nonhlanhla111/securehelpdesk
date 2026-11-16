@@ -105,10 +105,6 @@ Order matters a little because of CORS:
 Troubleshooting: if the connection is refused, open *SQL Server Configuration Manager* and enable
 **TCP/IP** and the **SQL Server Browser** service, or use `localhost,1433` instead of `localhost\SQLEXPRESS`.
 
-> **Honest note:** the automated tests run on SQLite. The models avoid SQL Server pitfalls
-> (NVARCHAR for user text, no multiple-cascade FKs), but the SQL Server path itself has not been
-> exercised yet. Treat your first run against it as a test, and tell me about any error you see.
-
 ## Roles and what they can do
 
 | | Employee | IT Support Agent | Administrator |

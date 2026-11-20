@@ -99,8 +99,9 @@ def list_tickets(
         conds.append(Ticket.assigned_to_id == assigned_to_id)
     if unassigned:
         conds.append(Ticket.assigned_to_id.is_(None))
-    if exclude_closed:
+        if exclude_closed:
         conds.append(Ticket.status_id != lookup_id(db, TicketStatus, StatusName.CLOSED.value))
+    if employee and _is_staff(user):
         like = f"%{_escape_like(employee.strip())}%"
         conds.append(Ticket.created_by.has(or_(User.full_name.ilike(like, escape="\\"),
                                                User.email.ilike(like, escape="\\"))))
